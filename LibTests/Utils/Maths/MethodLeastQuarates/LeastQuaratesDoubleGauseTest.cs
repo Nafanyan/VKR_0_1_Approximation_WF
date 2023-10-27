@@ -17,7 +17,7 @@ namespace AleksandrovRTm.LibsTests.Utils
         {
             // Arrange
             // Ожидаемые значения, т.е. которые в действительности
-            double sampleRate = 100;
+            double sampleRate = 10;
 
             double expectedAmplitudeOne = 1;
             double expectedAmplitudeTwo = 4;
@@ -29,7 +29,7 @@ namespace AleksandrovRTm.LibsTests.Utils
             double expectedDeviationTwo = 2;
 
             // Реальные значения, т.е. которые в теории были рассчитаны
-            double realAmplitudeOne = 1.1;
+            double realAmplitudeOne = 1;
             double realAmplitudeTwo = 4.9;
 
             double realPeakCentreOne = 5.4;

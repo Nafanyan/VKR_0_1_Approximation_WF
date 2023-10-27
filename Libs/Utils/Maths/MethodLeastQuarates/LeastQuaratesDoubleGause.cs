@@ -14,6 +14,7 @@ namespace AleksandrovRTm.Libs.Utils.Maths.MethodLeastQuarates
         public double DeviationSecond { get; private set; }
 
         private double _h = 0.01;
+        private readonly double MinH = 0.00001;
 
         public LeastQuaratesDoubleGause(
             DigitalSignal signal,
@@ -38,8 +39,9 @@ namespace AleksandrovRTm.Libs.Utils.Maths.MethodLeastQuarates
             double minValue = double.MaxValue;
             var calculatedResult = new Dictionary<List<double>, double>();
             var minValueParams = new Dictionary<List<double>, double>();
+            int count = 0;
 
-            while ( minValue >= 0.001 && _h != 0 )
+            while ( minValue >= 0.00001 && count != 1000 )
             {
                 List<Dictionary<string, double>> variantParams = GetAllVariantsForParams();
 
@@ -58,7 +60,8 @@ namespace AleksandrovRTm.Libs.Utils.Maths.MethodLeastQuarates
                 var newMinValueParams = calculatedResult.LastOrDefault( r => r.Value == calculatedResult.Values.Min() );
                 if ( minValue == newMinValueParams.Value )
                 {
-                    _h /= 2;
+                    _h = _h <= MinH ? MinH : _h / 2;
+                    count = _h == MinH ? count + 1 : count;
                 }
 
                 minValue = newMinValueParams.Value;
