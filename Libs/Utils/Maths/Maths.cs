@@ -12,9 +12,9 @@ namespace AleksandrovRTm.Libs.Utils.Maths
         /// </summary>
         /// <param name="digitalSignal"></param>
         /// <returns>X значения экстремумов максимумов</returns>
-        public static List<double> ExtremumPointsMax( DigitalSignal digitalSignal )
+        public static List<double> ExtremumPointsMax( DigitalSignal digitalSignal, int aperture = 3 )
         {
-            var extremumPoints = new ExtremumPoints( digitalSignal.Values, digitalSignal.SamplingRate );
+            var extremumPoints = new ExtremumPoints( digitalSignal.Values, digitalSignal.SamplingRate, aperture );
 
             return extremumPoints.GetXsExtremumPointsMax();
         }
@@ -24,9 +24,9 @@ namespace AleksandrovRTm.Libs.Utils.Maths
         /// </summary>
         /// <param name="digitalSignal"></param>
         /// <returns>X значения экстремумов минимумов</returns>
-        public static List<double> ExtremumPointsMin( DigitalSignal digitalSignal )
+        public static List<double> ExtremumPointsMin( DigitalSignal digitalSignal, int aperture = 3 )
         {
-            var extremumPoints = new ExtremumPoints( digitalSignal.Values, digitalSignal.SamplingRate );
+            var extremumPoints = new ExtremumPoints( digitalSignal.Values, digitalSignal.SamplingRate, aperture );
 
             return extremumPoints.GetXsExtremumPointsMin();
         }

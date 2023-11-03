@@ -104,8 +104,8 @@ namespace AleksandrovRTm.Libs.Utils.Maths.MethodLeastQuarates
             double sum = 0;
             var gauseOne = new GauseFunction( amplitudeFirst, matExpectationFirst, deviationFirst );
             var gauseTwo = new GauseFunction( amplitudeSecond, matExpectationSecond, deviationSecond );
-            var sig1 = new DigitalSignal( gauseOne.GetValues( 0, 30, 1 / Signal.SamplingRate ), Signal.SamplingRate ); ;
-            var sig2 = new DigitalSignal( gauseTwo.GetValues( 0, 30, 1 / Signal.SamplingRate ), Signal.SamplingRate );
+            var sig1 = new DigitalSignal( gauseOne.GetValues( 0, Signal.Values.Length, 1 / Signal.SamplingRate ), Signal.SamplingRate ); ;
+            var sig2 = new DigitalSignal( gauseTwo.GetValues( 0, Signal.Values.Length, 1 / Signal.SamplingRate ), Signal.SamplingRate );
 
             for ( int x = 0; x < Signal.Values.Length; x++ )
             {
