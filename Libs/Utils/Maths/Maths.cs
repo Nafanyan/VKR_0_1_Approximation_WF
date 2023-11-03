@@ -108,5 +108,32 @@ namespace AleksandrovRTm.Libs.Utils.Maths
             return leastQuarates;
         }
 
+        /// <summary>
+        /// Возвращает объект наименьших квадратов для двойной функции Гаусса
+        /// </summary>
+        /// <param name="signal"></param>
+        /// <param name="amplitudeFirst"></param>
+        /// <param name="matExpectationFirst"></param>
+        /// <param name="deviationFirst"></param>
+        /// <param name="amplitudeSecond"></param>
+        /// <param name="matExpectationSecond"></param>
+        /// <param name="deviationSecond"></param>
+        /// <returns></returns>
+        public static LeastQuaratesDoubleGause GetLeastQuaratesDoubleGauses(
+           DigitalSignal signal,
+           List<double> amplitudes,
+           List<double> matExpectations,
+           List<double> deviations )
+        {
+            var leastQuarates = new LeastQuaratesDoubleGause(
+                signal,
+                amplitudes,
+                matExpectations,
+                deviations );
+
+            leastQuarates.CalculateParameters();
+            return leastQuarates;
+        }
+
     }
 }

@@ -22,12 +22,12 @@
             int localIndexMax = 0;
             int localIndexMin = 0;
 
-            for( int i = 0; i < _graphics.Length - Aperture; i++ )
+            for ( int i = 0; i < _graphics.Length - Aperture; i++ )
             {
                 areaOfAperture = new List<double>();
-                for( int j = i; j < Aperture + i; j++ )
+                for ( int j = i; j < Aperture + i; j++ )
                 {
-                    areaOfAperture.Add( _graphics[j] );
+                    areaOfAperture.Add( _graphics[ j ] );
                 }
 
                 localIndexMax = areaOfAperture.IndexOf( areaOfAperture.Max() );
@@ -35,10 +35,10 @@
                     .ToList();
                 var localAreaRight = areaOfAperture.GetRange( Convert.ToInt32( Aperture / 2 ) + 1, Convert.ToInt32( Aperture / 2 ) )
                     .ToList();
-                localIndexMin = areaOfAperture.IndexOf( areaOfAperture.Min() );
-                if( localIndexMax == Aperture / 2
+
+                if ( localIndexMax == Aperture / 2
                     && IncreasingTrend( localAreaLeft )
-                    && DecreasingTrend ( localAreaRight ) )
+                    && DecreasingTrend( localAreaRight ) )
                 {
                     double xExtremum = ( i + localIndexMax ) / _sampleRate;
                     extremumPointsMax.Add( Math.Round( xExtremum, BitDeph ) );
@@ -54,16 +54,23 @@
             var areaOfAperture = new List<double>();
             int localIndexMin = 0;
 
-            for( int i = 0; i < _graphics.Length - Aperture; i++ )
+            for ( int i = 0; i < _graphics.Length - Aperture; i++ )
             {
                 areaOfAperture = new List<double>();
-                for( int j = i; j < Aperture + i; j++ )
+                for ( int j = i; j < Aperture + i; j++ )
                 {
-                    areaOfAperture.Add( _graphics[j] );
+                    areaOfAperture.Add( _graphics[ j ] );
                 }
 
                 localIndexMin = areaOfAperture.IndexOf( areaOfAperture.Min() );
-                if( localIndexMin == Aperture / 2 )
+                var localAreaLeft = areaOfAperture.GetRange( 0, Convert.ToInt32( Aperture / 2 ) )
+                    .ToList();
+                var localAreaRight = areaOfAperture.GetRange( Convert.ToInt32( Aperture / 2 ) + 1, Convert.ToInt32( Aperture / 2 ) )
+                    .ToList();
+
+                if ( localIndexMin == Aperture / 2
+                    && IncreasingTrend( localAreaRight )
+                    && DecreasingTrend( localAreaLeft ) )
                 {
                     double xExtremum = ( i + localIndexMin ) / _sampleRate;
                     extremumPointsMin.Add( Math.Round( xExtremum, BitDeph ) );
@@ -75,8 +82,8 @@
 
         private bool IncreasingTrend( List<double> data )
         {
-            double value = data[0];
-            foreach(double nextValue in data)
+            double value = data[ 0 ];
+            foreach ( double nextValue in data )
             {
                 if ( value > nextValue )
                 {
@@ -89,10 +96,10 @@
 
         private bool DecreasingTrend( List<double> data )
         {
-            double value = data[0];
-            foreach( double nextValue in data )
+            double value = data[ 0 ];
+            foreach ( double nextValue in data )
             {
-                if( value < nextValue )
+                if ( value < nextValue )
                 {
                     return false;
                 }

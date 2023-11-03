@@ -13,8 +13,8 @@ namespace AleksandrovRTm.Libs.Utils.Maths.MethodLeastQuarates
         public double MatExpectationSecond { get; private set; }
         public double DeviationSecond { get; private set; }
 
-        private double _h = 0.01;
-        private readonly double MinH = 0.00001;
+        private double _h = 10;
+        private readonly double MinH = 0.0001;
 
         public LeastQuaratesDoubleGause(
             DigitalSignal signal,
@@ -33,6 +33,36 @@ namespace AleksandrovRTm.Libs.Utils.Maths.MethodLeastQuarates
             MatExpectationSecond = matExpectationSecond;
             DeviationSecond = deviationSecond;
         }
+
+        public LeastQuaratesDoubleGause(
+           DigitalSignal signal,
+           List<double> amplitudes,
+           List<double> matExpectations,
+           List<double> deviations )
+        {
+
+            Signal = signal;
+            if ( ( amplitudes.Count != matExpectations.Count )
+                || ( amplitudes.Count != deviations.Count ) )
+            {
+                throw new Exception( "Размерность коллекций отличается. Каждому значению амплитуды должно соответствовать своё значение " +
+                    "мат. ожидания и среднего отклонения." );
+            }
+
+            Dictionary<string, double> correctParams = GetCorrectParams( amplitudes, matExpectations, deviations );
+            AmplitudeFirst = correctParams[ "AmplitudeFirst" ];
+            MatExpectationFirst = correctParams[ "MatExpectationFirst" ];
+            DeviationFirst = correctParams[ "DeviationFirst" ];
+            AmplitudeSecond = correctParams[ "AmplitudeSecond" ];
+            MatExpectationSecond = correctParams[ "MatExpectationSecond" ];
+            DeviationSecond = correctParams[ "DeviationSecond" ];
+        }
+
+        private LeastQuaratesDoubleGause()
+        {
+
+        }
+
 
         public void CalculateParameters()
         {
@@ -60,8 +90,9 @@ namespace AleksandrovRTm.Libs.Utils.Maths.MethodLeastQuarates
                 var newMinValueParams = calculatedResult.LastOrDefault( r => r.Value == calculatedResult.Values.Min() );
                 if ( minValue == newMinValueParams.Value )
                 {
-                    _h = _h <= MinH ? MinH : _h / 2;
+                    _h = _h <= MinH ? MinH : _h / 10;
                     count = _h == MinH ? count + 1 : count;
+                    continue;
                 }
 
                 minValue = newMinValueParams.Value;
@@ -110,9 +141,47 @@ namespace AleksandrovRTm.Libs.Utils.Maths.MethodLeastQuarates
             for ( int x = 0; x < Signal.Values.Length; x++ )
             {
                 double y = Signal.Values[ x ];
-                sum += Math.Pow( y - (sig1.Values[ x ] + sig2.Values[ x ]), 2 );
+                sum += Math.Pow( y - ( sig1.Values[ x ] + sig2.Values[ x ] ), 2 );
             }
             return sum;
+        }
+
+        private Dictionary<string, double> GetCorrectParams( List<double> amplitudes, List<double> matExpectations, List<double> deviations )
+        {
+            var correctParams = new Dictionary<string, double>();
+            var calculatedValueOfLeastQuarates = new List<double>();
+            for ( int i = 0; i < amplitudes.Count; i++ )
+            {
+                for ( int j = 0; j < amplitudes.Count; j++ )
+                {
+                    if ( deviations[ i ] is Double.NaN || deviations[ j ] is Double.NaN || i == j)
+                    {
+                        calculatedValueOfLeastQuarates.Add( Double.MaxValue );
+                        continue;
+                    }
+
+                    calculatedValueOfLeastQuarates.Add( GetValueOfLeastQuarates(
+                        amplitudes[ i ],
+                        matExpectations[ i ],
+                        deviations[ i ],
+                        amplitudes[ j ],
+                        matExpectations[ j ],
+                        deviations[ j ] ) );
+                }
+            }
+
+            int indexMin = calculatedValueOfLeastQuarates.IndexOf( calculatedValueOfLeastQuarates.Min() );
+            int indexFirstParams = Convert.ToInt32( Math.Floor( ( Decimal )indexMin / amplitudes.Count ) );
+            int indexSecondParams = indexMin % amplitudes.Count;
+
+            correctParams[ "AmplitudeFirst" ] = amplitudes[ indexFirstParams ];
+            correctParams[ "MatExpectationFirst" ] = matExpectations[ indexFirstParams ];
+            correctParams[ "DeviationFirst" ] = deviations[ indexFirstParams ];
+            correctParams[ "AmplitudeSecond" ] = amplitudes[ indexSecondParams ];
+            correctParams[ "MatExpectationSecond" ] = matExpectations[ indexSecondParams ];
+            correctParams[ "DeviationSecond" ] = deviations[ indexSecondParams ];
+
+            return correctParams;
         }
     }
 }
