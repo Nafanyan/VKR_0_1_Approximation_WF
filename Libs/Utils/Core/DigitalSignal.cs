@@ -5,7 +5,7 @@
         public double[] Values { get; private set; }
         public double SamplingRate { get; private set; }
 
-        public DigitalSignal(double[] values, double samplingRate)
+        public DigitalSignal(double[] values, double samplingRate = 1)
         {
             Values = values;
             SamplingRate = samplingRate;

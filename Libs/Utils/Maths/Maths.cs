@@ -12,9 +12,9 @@ namespace AleksandrovRTm.Libs.Utils.Maths
         /// </summary>
         /// <param name="digitalSignal"></param>
         /// <returns>X значения экстремумов максимумов</returns>
-        public static List<double> ExtremumPointsMax( DigitalSignal digitalSignal )
+        public static List<double> ExtremumPointsMax( DigitalSignal digitalSignal, int aperture = 3 )
         {
-            var extremumPoints = new ExtremumPoints( digitalSignal.Values, digitalSignal.SamplingRate );
+            var extremumPoints = new ExtremumPoints( digitalSignal.Values, digitalSignal.SamplingRate, aperture );
 
             return extremumPoints.GetXsExtremumPointsMax();
         }
@@ -24,9 +24,9 @@ namespace AleksandrovRTm.Libs.Utils.Maths
         /// </summary>
         /// <param name="digitalSignal"></param>
         /// <returns>X значения экстремумов минимумов</returns>
-        public static List<double> ExtremumPointsMin( DigitalSignal digitalSignal )
+        public static List<double> ExtremumPointsMin( DigitalSignal digitalSignal, int aperture = 3 )
         {
-            var extremumPoints = new ExtremumPoints( digitalSignal.Values, digitalSignal.SamplingRate );
+            var extremumPoints = new ExtremumPoints( digitalSignal.Values, digitalSignal.SamplingRate, aperture );
 
             return extremumPoints.GetXsExtremumPointsMin();
         }
@@ -103,6 +103,33 @@ namespace AleksandrovRTm.Libs.Utils.Maths
                 amplitudeSecond,
                 matExpectationSecond,
                 deviationSecond );
+
+            leastQuarates.CalculateParameters();
+            return leastQuarates;
+        }
+
+        /// <summary>
+        /// Возвращает объект наименьших квадратов для двойной функции Гаусса
+        /// </summary>
+        /// <param name="signal"></param>
+        /// <param name="amplitudeFirst"></param>
+        /// <param name="matExpectationFirst"></param>
+        /// <param name="deviationFirst"></param>
+        /// <param name="amplitudeSecond"></param>
+        /// <param name="matExpectationSecond"></param>
+        /// <param name="deviationSecond"></param>
+        /// <returns></returns>
+        public static LeastQuaratesDoubleGause GetLeastQuaratesDoubleGauses(
+           DigitalSignal signal,
+           List<double> amplitudes,
+           List<double> matExpectations,
+           List<double> deviations )
+        {
+            var leastQuarates = new LeastQuaratesDoubleGause(
+                signal,
+                amplitudes,
+                matExpectations,
+                deviations );
 
             leastQuarates.CalculateParameters();
             return leastQuarates;

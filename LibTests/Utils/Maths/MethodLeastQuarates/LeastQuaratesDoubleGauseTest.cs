@@ -1,6 +1,7 @@
 ﻿using AleksandrovRTm.Libs.Utils.Core;
 using AleksandrovRTm.Libs.Utils.Functions;
 using AleksandrovRTm.Libs.Utils.Maths;
+using System.Text;
 
 namespace AleksandrovRTm.LibsTests.Utils
 {
@@ -17,7 +18,7 @@ namespace AleksandrovRTm.LibsTests.Utils
         {
             // Arrange
             // Ожидаемые значения, т.е. которые в действительности
-            double sampleRate = 100;
+            double sampleRate = 10;
 
             double expectedAmplitudeOne = 1;
             double expectedAmplitudeTwo = 4;
@@ -29,13 +30,13 @@ namespace AleksandrovRTm.LibsTests.Utils
             double expectedDeviationTwo = 2;
 
             // Реальные значения, т.е. которые в теории были рассчитаны
-            double realAmplitudeOne = 1.1;
-            double realAmplitudeTwo = 4.9;
+            double realAmplitudeOne = 1.3;
+            double realAmplitudeTwo = 4.3;
 
-            double realPeakCentreOne = 5.4;
-            double realPeakCentreTwo = 15;
+            double realPeakCentreOne = 5.3;
+            double realPeakCentreTwo = 15.3;
 
-            double realDeviationOne = 1.23;
+            double realDeviationOne = 1.3;
             double realDeviationTwo = 2.3;
 
             // Act
@@ -64,7 +65,55 @@ namespace AleksandrovRTm.LibsTests.Utils
             Assert.AreEqual( expectedAmplitudeTwo, Math.Round( leastQuarates.AmplitudeSecond, 2 ) );
             Assert.AreEqual( expectedPeakCentreTwo, Math.Round( leastQuarates.MatExpectationSecond, 2 ) );
             Assert.AreEqual( expectedDeviationTwo, Math.Round( leastQuarates.DeviationSecond, 2 ) );
+        }
 
+        [Test]
+        public void CalculateParameters_TheoreticalListParamsGauseFunction_CorrectParams()
+        {
+            // Arrange
+            // Ожидаемые значения, т.е. которые в действительности
+            double sampleRate = 10;
+
+            double expectedAmplitudeOne = 1;
+            double expectedAmplitudeTwo = 4;
+
+            double expectedPeakCentreOne = 5;
+            double expectedPeakCentreTwo = 15;
+
+            double expectedDeviationOne = 1;
+            double expectedDeviationTwo = 2;
+
+            // Реальные значения, т.е. которые в теории были рассчитаны
+            List<double> realAmplitudeOne = new List<double> { 1.7, 1, 2, 4.3, 4.5, 3, 1.8, 9, 5.2, -2.1 };
+
+            List<double> realPeakCentreOne = new List<double> { 5, 4, 3, 14, 12, 13, 17, 28, 25, 19 };
+
+            List<double> realDeviationOne = new List<double> { 1.3, 0.8, 2.2, 2.3, 2, 1.3, 1.8, 2.4, 4.5, 1 };
+
+            // Act
+            var gauseOne = new GauseFunction( expectedAmplitudeOne, expectedPeakCentreOne, expectedDeviationOne );
+            var signalOne = new DigitalSignal( gauseOne.GetValues( 0, 30, 1 / sampleRate ), sampleRate );
+
+            var gauseTwo = new GauseFunction( expectedAmplitudeTwo, expectedPeakCentreTwo, expectedDeviationTwo );
+            var signalTwo = new DigitalSignal( gauseTwo.GetValues( 0, 30, 1 / sampleRate ), sampleRate );
+
+            DigitalSignal combineGause = DigitalSignal.CombineTwoSignals( signalOne, signalTwo );
+            
+            // Создаю объект метода наименьших квадратов для двойной функции Гаусса
+            var leastQuarates = Maths.GetLeastQuaratesDoubleGauses(
+                combineGause,
+                realAmplitudeOne,
+                realPeakCentreOne,
+                realDeviationOne );
+
+            // Assert
+            Assert.AreEqual( expectedAmplitudeOne, Math.Round( leastQuarates.AmplitudeFirst, 2 ) );
+            Assert.AreEqual( expectedPeakCentreOne, Math.Round( leastQuarates.MatExpectationFirst, 2 ) );
+            Assert.AreEqual( expectedDeviationOne, Math.Round( leastQuarates.DeviationFirst, 2 ) );
+
+            Assert.AreEqual( expectedAmplitudeTwo, Math.Round( leastQuarates.AmplitudeSecond, 2 ) );
+            Assert.AreEqual( expectedPeakCentreTwo, Math.Round( leastQuarates.MatExpectationSecond, 2 ) );
+            Assert.AreEqual( expectedDeviationTwo, Math.Round( leastQuarates.DeviationSecond, 2 ) );
         }
 
         [Test]
@@ -92,26 +141,17 @@ namespace AleksandrovRTm.LibsTests.Utils
 
             DigitalSignal combineGause = DigitalSignal.CombineTwoSignals( signalOne, signalTwo );
 
-            // Нахожу экстремумы, а из них амплитуды и значения максимумов относительно x
-            List<double> xExtremumsMax = Maths.ExtremumPointsMax( combineGause );
-            double maxOneGause = combineGause.Values[ ( int )( xExtremumsMax[ 0 ] * combineGause.SamplingRate ) ];
-            double maxTwoGause = combineGause.Values[ ( int )( xExtremumsMax[ 1 ] * combineGause.SamplingRate ) ];
-
-            // Беру любую точку на каждой из функций Гаусса и расчитываю среднее отклонение их уравнения с одной неизвестной
-            var pointFromGauseOne = Maths.FindPointLeftOfTheY( combineGause, maxOneGause, 0.3 );
-            var pointFromGauseTwo = Maths.FindPointRightOfTheY( combineGause, maxTwoGause, 0.3 );
-            double deviationFirstGause = GauseFunction.CalculateDeviation( pointFromGauseOne[ "y" ], pointFromGauseOne[ "x" ], amplitudeOne, peakCentreOne );
-            double deviationSecondGause = GauseFunction.CalculateDeviation( pointFromGauseTwo[ "y" ], pointFromGauseTwo[ "x" ], amplitudeTwo, peakCentreTwo );
+            List<double> xExtremumsMax = Maths.ExtremumPointsMax( combineGause, 5 );
+            List<double> maxsGause = xExtremumsMax.Select( t => combineGause.Values[ ( int )( t * combineGause.SamplingRate ) ] )
+                .ToList();
+            List<double> deviations = GetDeviations( combineGause, maxsGause, xExtremumsMax );
 
             // Создаю объект метода наименьших квадратов для двойной функции Гаусса
-            var leastQuarates = Maths.GetLeastQuaratesDoubleGause(
+            var leastQuarates = Maths.GetLeastQuaratesDoubleGauses(
                 combineGause,
-                maxOneGause,
-                xExtremumsMax[ 0 ],
-                deviationFirstGause,
-                maxTwoGause,
-                xExtremumsMax[ 1 ],
-                deviationSecondGause );
+                maxsGause,
+                xExtremumsMax,
+                deviations );
 
             // Assert
             Assert.AreEqual( amplitudeOne, leastQuarates.AmplitudeFirst );
@@ -121,6 +161,85 @@ namespace AleksandrovRTm.LibsTests.Utils
             Assert.AreEqual( amplitudeTwo, leastQuarates.AmplitudeSecond );
             Assert.AreEqual( peakCentreTwo, leastQuarates.MatExpectationSecond );
             Assert.AreEqual( deviationTwo, leastQuarates.DeviationSecond );
+        }
+
+        [Test]
+        public void CalculateParameters_RealData_CorrectParams()
+        {
+            // Arrange
+            List<double> data = new List<double>();
+            using ( FileStream fstream = File.OpenRead( "../../../../Realnye_dannye.txt" ) )
+            {
+                byte[] buffer = new byte[ fstream.Length ];
+                fstream.ReadAsync( buffer, 0, buffer.Length );
+                string textFromFile = Encoding.Default.GetString( buffer );
+                fstream.Close();
+                data = textFromFile.Split( "\r\n" )
+                    .Select( t => t.Replace( '.', ',' ) )
+                    .Where( t => t != "" )
+                    .Select( t => Convert.ToDouble( t ) ).ToList();
+            }
+
+            // Act
+            var signal = new DigitalSignal( data.ToArray() );
+            List<double> xExtremumsMax = Maths.ExtremumPointsMax( signal, 5 );
+            List<double> maxsGause = xExtremumsMax.Select( t => signal.Values[ ( int )( t * signal.SamplingRate ) ] )
+                .ToList();
+            List<double> deviations = GetDeviations( signal, maxsGause, xExtremumsMax );
+
+            // Создаю объект метода наименьших квадратов для двойной функции Гаусса
+            var leastQuarates = Maths.GetLeastQuaratesDoubleGauses(
+                signal,
+                maxsGause,
+                xExtremumsMax,
+                deviations );
+
+            // Assert
+        }
+
+        [Test]
+        public void CalculateParameters_ModuleData_CorrectParams()
+        {
+            // Arrange
+            List<double> data = new List<double>();
+            using ( FileStream fstream = File.OpenRead( "../../../../Smodelirovannye_dannye_1.txt" ) )
+            {
+                byte[] buffer = new byte[ fstream.Length ];
+                fstream.ReadAsync( buffer, 0, buffer.Length );
+                string textFromFile = Encoding.Default.GetString( buffer );
+                fstream.Close();
+                data = textFromFile.Split( "\r\n" )
+                    .Select( t => t.Replace( '.', ',' ) )
+                    .Where( t => t != "" )
+                    .Select( t => Convert.ToDouble( t ) ).ToList();
+            }
+
+            // Act
+            var signal = new DigitalSignal( data.ToArray() );
+            List<double> xExtremumsMax = Maths.ExtremumPointsMax( signal, 5 );
+            List<double> maxsGause = xExtremumsMax.Select( t => signal.Values[ ( int )( t * signal.SamplingRate ) ] )
+                .ToList();
+            List<double> deviations = GetDeviations( signal, maxsGause, xExtremumsMax );
+
+            // Создаю объект метода наименьших квадратов для двойной функции Гаусса
+            var leastQuarates = Maths.GetLeastQuaratesDoubleGauses(
+                signal,
+                maxsGause,
+                xExtremumsMax,
+                deviations );
+
+            // Assert
+        }
+
+        private List<double> GetDeviations( DigitalSignal signal, List<double> amplitudes, List<double> peakCenters )
+        {
+            var result = new List<double>();
+            for ( int i = 0; i < amplitudes.Count; i++ )
+            {
+                var pointFromGause = Maths.FindPointLeftOfTheY( signal, amplitudes[ i ], 0.4 );
+                result.Add( GauseFunction.CalculateDeviation( pointFromGause[ "y" ], pointFromGause[ "x" ], amplitudes[ i ], peakCenters[ i ] ) );
+            }
+            return result;
         }
     }
 }
