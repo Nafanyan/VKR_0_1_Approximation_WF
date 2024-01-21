@@ -1,9 +1,7 @@
-﻿using AleksandrovRTm.Libs.Utils.Signals;
-using AleksandrovRTm.Libs.Utils.Core;
-using AleksandrovRTm.Libs.Utils.Maths.GradientDescents;
-using AleksandrovRTm.Libs.Utils.Maths.MethodLeastQuarates;
+﻿using AleksandrovRTm.Core.Entities;
+using AleksandrovRTm.Libs.Maths.MethodLeastQuarates;
 
-namespace AleksandrovRTm.Libs.Utils.Maths
+namespace AleksandrovRTm.Libs.Maths
 {
     public static class Maths
     {

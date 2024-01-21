@@ -1,8 +1,8 @@
-using AleksandrovRTm.Libs.Utils.Core;
-using AleksandrovRTm.Libs.Utils.Functions;
-using AleksandrovRTm.Libs.Utils.Maths;
+using AleksandrovRTm.Core.Entities;
+using AleksandrovRTm.Libs.Functions;
+using AleksandrovMaths = AleksandrovRTm.Libs.Maths.Maths;
 
-namespace AleksandrovRTm.LibsTests.Utils
+namespace AleksandrovRTm.LibsTests.Maths
 {
     public class ExtremumPointsTests
     {
@@ -35,7 +35,7 @@ namespace AleksandrovRTm.LibsTests.Utils
             var signalTwo = new DigitalSignal( gauseTwo.GetValues( 0, 20, 1 / sampleRate ), sampleRate );
 
             DigitalSignal combineGause = DigitalSignal.CombineTwoSignals( signalOne, signalTwo );
-            List<double> xExtremumsMax = Maths.ExtremumPointsMax( combineGause );
+            List<double> xExtremumsMax = AleksandrovMaths.ExtremumPointsMax( combineGause );
 
             // Assert
             // Check peak centres

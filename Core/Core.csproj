@@ -7,14 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Core\Core.csproj" />
+    <None Remove="Entities\" />
+    <None Remove="Entities\Functions\" />
+    <None Remove="Entities\Functions\Interfaces\" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="Functions\" />
-    <None Remove="Maths\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Functions\" />
-    <Folder Include="Maths\" />
+    <Folder Include="Entities\" />
+    <Folder Include="Entities\Functions\" />
+    <Folder Include="Entities\Functions\Interfaces\" />
   </ItemGroup>
 </Project>

@@ -1,4 +1,4 @@
-﻿namespace AleksandrovRTm.Libs.Utils.Maths.Derivatives
+﻿namespace AleksandrovRTm.Libs.Maths.Derivatives
 {
     internal static class GauseFunction
     {

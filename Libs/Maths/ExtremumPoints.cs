@@ -1,4 +1,4 @@
-﻿namespace AleksandrovRTm.Libs.Utils.Signals
+﻿namespace AleksandrovRTm.Libs.Maths
 {
     internal class ExtremumPoints
     {
@@ -20,16 +20,16 @@
             var areaOfAperture = new List<double>();
             int localIndexMax = 0;
 
-            for( int i = 0; i < _graphics.Length - Aperture; i++ )
+            for ( int i = 0; i < _graphics.Length - Aperture; i++ )
             {
                 areaOfAperture = new List<double>();
-                for( int j = i; j < Aperture + i; j++ )
+                for ( int j = i; j < Aperture + i; j++ )
                 {
-                    areaOfAperture.Add( _graphics[j] );
+                    areaOfAperture.Add( _graphics[ j ] );
                 }
 
                 localIndexMax = areaOfAperture.IndexOf( areaOfAperture.Max() );
-                if( localIndexMax == Aperture / 2 )
+                if ( localIndexMax == Aperture / 2 )
                 {
                     double xExtremum = ( i + localIndexMax ) / _sampleRate;
                     extremumPointsMax.Add( Math.Round( xExtremum, BitDeph ) );
@@ -45,16 +45,16 @@
             var areaOfAperture = new List<double>();
             int localIndexMin = 0;
 
-            for( int i = 0; i < _graphics.Length - Aperture; i++ )
+            for ( int i = 0; i < _graphics.Length - Aperture; i++ )
             {
                 areaOfAperture = new List<double>();
-                for( int j = i; j < Aperture + i; j++ )
+                for ( int j = i; j < Aperture + i; j++ )
                 {
-                    areaOfAperture.Add( _graphics[j] );
+                    areaOfAperture.Add( _graphics[ j ] );
                 }
 
                 localIndexMin = areaOfAperture.IndexOf( areaOfAperture.Min() );
-                if( localIndexMin == Aperture / 2 )
+                if ( localIndexMin == Aperture / 2 )
                 {
                     double xExtremum = ( i + localIndexMin ) / _sampleRate;
                     extremumPointsMin.Add( Math.Round( xExtremum, BitDeph ) );

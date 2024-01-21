@@ -1,4 +1,4 @@
-﻿namespace AleksandrovRTm.Libs.Utils.Maths
+﻿namespace AleksandrovRTm.Libs.Maths
 {
     public class FindPoint
     {
@@ -17,12 +17,12 @@
             Dictionary<string, double> result = new Dictionary<string, double>();
             int xFromY = _graphics.ToList().IndexOf( y );
 
-            for( int i = 0; i <= xFromY; i++ )
+            for ( int i = 0; i <= xFromY; i++ )
             {
-                if( _graphics[i] <= y * heightRelativeToY && _graphics[i + 1] >= y * heightRelativeToY )
+                if ( _graphics[ i ] <= y * heightRelativeToY && _graphics[ i + 1 ] >= y * heightRelativeToY )
                 {
-                    result["x"] = Math.Round( ( i + 1 ) / _sampleRate, BitDeph );
-                    result["y"] = _graphics[i + 1];
+                    result[ "x" ] = Math.Round( ( i + 1 ) / _sampleRate, BitDeph );
+                    result[ "y" ] = _graphics[ i + 1 ];
                     return result;
                 }
             }
@@ -35,12 +35,12 @@
             Dictionary<string, double> result = new Dictionary<string, double>();
             int xFromY = _graphics.ToList().IndexOf( y );
 
-            for( int i = _graphics.Count() - 2; i >= xFromY; i-- )
+            for ( int i = _graphics.Count() - 2; i >= xFromY; i-- )
             {
-                if( _graphics[i] >= y * heightRelativeToY && _graphics[i + 1] <= y * heightRelativeToY )
+                if ( _graphics[ i ] >= y * heightRelativeToY && _graphics[ i + 1 ] <= y * heightRelativeToY )
                 {
-                    result["x"] = Math.Round( ( i - 1 ) / _sampleRate, BitDeph );
-                    result["y"] = _graphics[i +- 1];
+                    result[ "x" ] = Math.Round( ( i - 1 ) / _sampleRate, BitDeph );
+                    result[ "y" ] = _graphics[ i + -1 ];
                 }
             }
 

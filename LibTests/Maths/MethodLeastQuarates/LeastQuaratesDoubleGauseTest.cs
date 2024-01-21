@@ -1,8 +1,8 @@
-﻿using AleksandrovRTm.Libs.Utils.Core;
-using AleksandrovRTm.Libs.Utils.Functions;
-using AleksandrovRTm.Libs.Utils.Maths;
+﻿using AleksandrovRTm.Core.Entities;
+using AleksandrovRTm.Libs.Functions;
+using AleksandrovMaths = AleksandrovRTm.Libs.Maths.Maths;
 
-namespace AleksandrovRTm.LibsTests.Utils
+namespace AleksandrovRTm.LibsTests.Maths.MethodLeastQuarates
 {
     internal class LeastQuaratesDoubleGauseTest
     {
@@ -47,7 +47,7 @@ namespace AleksandrovRTm.LibsTests.Utils
 
             DigitalSignal combineGause = DigitalSignal.CombineTwoSignals( signalOne, signalTwo );
 
-            var leastQuarates = Maths.GetLeastQuaratesDoubleGause(
+            var leastQuarates = AleksandrovMaths.GetLeastQuaratesDoubleGause(
                 combineGause,
                 realAmplitudeOne,
                 realPeakCentreOne,
@@ -93,18 +93,18 @@ namespace AleksandrovRTm.LibsTests.Utils
             DigitalSignal combineGause = DigitalSignal.CombineTwoSignals( signalOne, signalTwo );
 
             // Нахожу экстремумы, а из них амплитуды и значения максимумов относительно x
-            List<double> xExtremumsMax = Maths.ExtremumPointsMax( combineGause );
+            List<double> xExtremumsMax = AleksandrovMaths.ExtremumPointsMax( combineGause );
             double maxOneGause = combineGause.Values[ ( int )( xExtremumsMax[ 0 ] * combineGause.SamplingRate ) ];
             double maxTwoGause = combineGause.Values[ ( int )( xExtremumsMax[ 1 ] * combineGause.SamplingRate ) ];
 
             // Беру любую точку на каждой из функций Гаусса и расчитываю среднее отклонение их уравнения с одной неизвестной
-            var pointFromGauseOne = Maths.FindPointLeftOfTheY( combineGause, maxOneGause, 0.3 );
-            var pointFromGauseTwo = Maths.FindPointRightOfTheY( combineGause, maxTwoGause, 0.3 );
+            var pointFromGauseOne = AleksandrovMaths.FindPointLeftOfTheY( combineGause, maxOneGause, 0.3 );
+            var pointFromGauseTwo = AleksandrovMaths.FindPointRightOfTheY( combineGause, maxTwoGause, 0.3 );
             double deviationFirstGause = GauseFunction.CalculateDeviation( pointFromGauseOne[ "y" ], pointFromGauseOne[ "x" ], amplitudeOne, peakCentreOne );
             double deviationSecondGause = GauseFunction.CalculateDeviation( pointFromGauseTwo[ "y" ], pointFromGauseTwo[ "x" ], amplitudeTwo, peakCentreTwo );
 
             // Создаю объект метода наименьших квадратов для двойной функции Гаусса
-            var leastQuarates = Maths.GetLeastQuaratesDoubleGause(
+            var leastQuarates = AleksandrovMaths.GetLeastQuaratesDoubleGause(
                 combineGause,
                 maxOneGause,
                 xExtremumsMax[ 0 ],
