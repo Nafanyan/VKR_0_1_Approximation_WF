@@ -1,6 +1,6 @@
-﻿using AleksandrovRTm.Libs.Utils.Functions.Interfaces;
+﻿using AleksandrovRTm.Core.Entities.Functions.Interfaces;
 
-namespace AleksandrovRTm.Libs.Utils.Functions
+namespace AleksandrovRTm.Core.Entities.Functions
 {
     public abstract class BaseFunction :
         IGetValueOfFunction,
@@ -8,16 +8,16 @@ namespace AleksandrovRTm.Libs.Utils.Functions
     {
         public abstract double GetValue( double x );
 
-        virtual public double[] FunctionValues { get; private set; } = new double[0];
+        virtual public double[] FunctionValues { get; private set; } = new double[ 0 ];
 
         public virtual double[] GetValues( double startX, double endX, double step )
         {
             int numValues = ( int )( ( endX - startX ) / step );
-            FunctionValues = new double[numValues];
+            FunctionValues = new double[ numValues ];
 
-            for( int i = 0; i < numValues; i++ )
+            for ( int i = 0; i < numValues; i++ )
             {
-                FunctionValues[i] = GetValue( startX );
+                FunctionValues[ i ] = GetValue( startX );
                 startX += step;
             }
 

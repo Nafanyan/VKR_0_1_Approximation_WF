@@ -1,9 +1,7 @@
-﻿using AleksandrovRTm.Libs.Utils.Signals;
-using AleksandrovRTm.Libs.Utils.Core;
-using AleksandrovRTm.Libs.Utils.Maths.GradientDescents;
-using AleksandrovRTm.Libs.Utils.Maths.MethodLeastQuarates;
+﻿using AleksandrovRTm.Core.Entities;
+using AleksandrovRTm.Libs.Maths.MethodLeastQuarates;
 
-namespace AleksandrovRTm.Libs.Utils.Maths
+namespace AleksandrovRTm.Libs.Maths
 {
     public static class Maths
     {
@@ -86,7 +84,7 @@ namespace AleksandrovRTm.Libs.Utils.Maths
         /// <param name="matExpectationSecond"></param>
         /// <param name="deviationSecond"></param>
         /// <returns></returns>
-        public static LeastQuaratesDoubleGause GetLeastQuaratesDoubleGause(
+        public static DoubleGFLeastQuarates GetLeastQuaratesDoubleGause(
             DigitalSignal signal,
             double amplitudeFirst,
             double matExpectationFirst,
@@ -95,7 +93,7 @@ namespace AleksandrovRTm.Libs.Utils.Maths
             double matExpectationSecond,
             double deviationSecond )
         {
-            var leastQuarates = new LeastQuaratesDoubleGause(
+            var leastQuarates = new DoubleGFLeastQuarates(
                 signal,
                 amplitudeFirst,
                 matExpectationFirst,

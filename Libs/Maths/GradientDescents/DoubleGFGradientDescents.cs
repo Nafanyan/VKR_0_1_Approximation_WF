@@ -1,6 +1,6 @@
-﻿using AleksandrovRTm.Libs.Utils.Maths.Derivatives;
+﻿using AleksandrovRTm.Libs.Maths.Derivatives;
 
-namespace AleksandrovRTm.Libs.Utils.Maths.GradientDescents
+namespace AleksandrovRTm.Libs.Maths.GradientDescents
 {
     internal class DoubleGFGradientDescents
     {
@@ -23,9 +23,9 @@ namespace AleksandrovRTm.Libs.Utils.Maths.GradientDescents
             "DeviationSecond",
         };
 
-        public DoubleGFGradientDescents( 
-            double amplitudeFirst, 
-            double matExpectationFirst, 
+        public DoubleGFGradientDescents(
+            double amplitudeFirst,
+            double matExpectationFirst,
             double deviationFirst,
             double amplitudeSecond,
             double matExpectationSecond,
@@ -45,10 +45,10 @@ namespace AleksandrovRTm.Libs.Utils.Maths.GradientDescents
         {
             var calculatedParameters = new Dictionary<string, double>();
             int count = 0;
-            while( true && count <= 1000 )
+            while ( true && count <= 1000 )
             {
                 calculatedParameters = CalculationStepOfGradientDescent();
-                if( GradientIsMax( calculatedParameters ) )
+                if ( GradientIsMax( calculatedParameters ) )
                 {
                     return calculatedParameters;
                 }
@@ -76,20 +76,20 @@ namespace AleksandrovRTm.Libs.Utils.Maths.GradientDescents
             };
 
             var calculationParams = new Dictionary<string, double>();
-            for( int i = 0; i < previousParams.Count; i++ )
+            for ( int i = 0; i < previousParams.Count; i++ )
             {
-                calculationParams[_nameParams[i]] = ( previousParams[i] + _stepGradientDescent * newParams[i] );
+                calculationParams[ _nameParams[ i ] ] = ( previousParams[ i ] + _stepGradientDescent * newParams[ i ] );
             }
 
             return calculationParams;
         }
 
-        private bool GradientIsMax( Dictionary< string, double> calculatedParameters )
+        private bool GradientIsMax( Dictionary<string, double> calculatedParameters )
         {
-            return calculatedParameters["Amplitude"] <= AmplitudeSecond
-                && calculatedParameters["MatExpectation"] <= MatExpectationSecond
-                && calculatedParameters["Deviation"] <= DeviationSecond
-                && calculatedParameters["X"] <= X;
+            return calculatedParameters[ "Amplitude" ] <= AmplitudeSecond
+                && calculatedParameters[ "MatExpectation" ] <= MatExpectationSecond
+                && calculatedParameters[ "Deviation" ] <= DeviationSecond
+                && calculatedParameters[ "X" ] <= X;
         }
     }
 }

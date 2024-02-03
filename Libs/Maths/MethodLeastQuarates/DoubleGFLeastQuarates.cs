@@ -1,9 +1,9 @@
-﻿using AleksandrovRTm.Libs.Utils.Core;
-using AleksandrovRTm.Libs.Utils.Functions;
+﻿using AleksandrovRTm.Core.Entities;
+using AleksandrovRTm.Libs.Functions;
 
-namespace AleksandrovRTm.Libs.Utils.Maths.MethodLeastQuarates
+namespace AleksandrovRTm.Libs.Maths.MethodLeastQuarates
 {
-    public class LeastQuaratesDoubleGause
+    public class DoubleGFLeastQuarates
     {
         public DigitalSignal Signal;
         public double AmplitudeFirst { get; private set; }
@@ -15,7 +15,7 @@ namespace AleksandrovRTm.Libs.Utils.Maths.MethodLeastQuarates
 
         private double _h = 0.01;
 
-        public LeastQuaratesDoubleGause(
+        public DoubleGFLeastQuarates(
             DigitalSignal signal,
             double amplitudeFirst,
             double matExpectationFirst,
@@ -107,7 +107,7 @@ namespace AleksandrovRTm.Libs.Utils.Maths.MethodLeastQuarates
             for ( int x = 0; x < Signal.Values.Length; x++ )
             {
                 double y = Signal.Values[ x ];
-                sum += Math.Pow( y - (sig1.Values[ x ] + sig2.Values[ x ]), 2 );
+                sum += Math.Pow( y - ( sig1.Values[ x ] + sig2.Values[ x ] ), 2 );
             }
             return sum;
         }
