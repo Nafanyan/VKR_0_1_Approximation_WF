@@ -3,7 +3,7 @@ using AleksandrovRTm.Libs.Functions;
 
 namespace AleksandrovRTm.Libs.Maths.MethodLeastQuarates
 {
-    public class LeastQuaratesDoubleGause
+    public class DoubleGFLeastQuarates
     {
         public DigitalSignal Signal;
         public double AmplitudeFirst { get; private set; }
@@ -15,7 +15,7 @@ namespace AleksandrovRTm.Libs.Maths.MethodLeastQuarates
 
         private double _h = 0.01;
 
-        public LeastQuaratesDoubleGause(
+        public DoubleGFLeastQuarates(
             DigitalSignal signal,
             double amplitudeFirst,
             double matExpectationFirst,

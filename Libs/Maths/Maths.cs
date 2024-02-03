@@ -84,7 +84,7 @@ namespace AleksandrovRTm.Libs.Maths
         /// <param name="matExpectationSecond"></param>
         /// <param name="deviationSecond"></param>
         /// <returns></returns>
-        public static LeastQuaratesDoubleGause GetLeastQuaratesDoubleGause(
+        public static DoubleGFLeastQuarates GetLeastQuaratesDoubleGause(
             DigitalSignal signal,
             double amplitudeFirst,
             double matExpectationFirst,
@@ -93,7 +93,7 @@ namespace AleksandrovRTm.Libs.Maths
             double matExpectationSecond,
             double deviationSecond )
         {
-            var leastQuarates = new LeastQuaratesDoubleGause(
+            var leastQuarates = new DoubleGFLeastQuarates(
                 signal,
                 amplitudeFirst,
                 matExpectationFirst,
