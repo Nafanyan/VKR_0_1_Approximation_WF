@@ -1,5 +1,6 @@
 ﻿using AleksandrovRTm.Core.Entities;
 using AleksandrovRTm.Libs.Maths.MethodLeastQuarates;
+using Libs.Maths.MethodFirstMoments;
 
 namespace AleksandrovRTm.Libs.Maths
 {
@@ -104,6 +105,24 @@ namespace AleksandrovRTm.Libs.Maths
 
             leastQuarates.CalculateParameters();
             return leastQuarates;
+        }
+
+        /// <summary>
+        /// Рассчитывает величину первого момента для предоставляемой функции на указанном
+        /// диапазоне
+        /// </summary>
+        /// <param name="signal"></param>
+        /// <param name="startRange"></param>
+        /// <param name="endRange"></param>
+        /// <returns></returns>
+        public static double CalculateMethodFirstMoments(
+            DigitalSignal signal,
+            int startRange,
+            int endRange )
+        {
+            var methodFirstMoments = new GFMethodFirstMoments();
+
+            return methodFirstMoments.Calculate( signal, startRange, endRange );
         }
 
     }
