@@ -1,5 +1,6 @@
 ﻿using AleksandrovRTm.Core.Entities;
 using AleksandrovRTm.Libs.Maths.MethodLeastQuarates;
+using Libs.Maths;
 using Libs.Maths.MethodFirstMoments;
 
 namespace AleksandrovRTm.Libs.Maths
@@ -120,9 +121,16 @@ namespace AleksandrovRTm.Libs.Maths
             int startRange,
             int endRange )
         {
-            var methodFirstMoments = new GFMethodFirstMoments();
+            var methodFirstMoments = new MethodFirstMoments();
 
             return methodFirstMoments.Calculate( signal, startRange, endRange );
+        }
+
+        public static double CalculateMethodFiveChannels( DigitalSignal signal, int maxIndex )
+        {
+            var methodFiveChannels = new MethodFiveChannels();
+
+            return methodFiveChannels.Calculate( signal, maxIndex );
         }
 
     }
