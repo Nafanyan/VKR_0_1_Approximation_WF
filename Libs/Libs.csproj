@@ -12,9 +12,13 @@
   <ItemGroup>
     <None Remove="Functions\" />
     <None Remove="Maths\" />
+    <None Remove="Extensions\" />
+    <None Remove="Exceptions\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Functions\" />
     <Folder Include="Maths\" />
+    <Folder Include="Extensions\" />
+    <Folder Include="Exceptions\" />
   </ItemGroup>
 </Project>
