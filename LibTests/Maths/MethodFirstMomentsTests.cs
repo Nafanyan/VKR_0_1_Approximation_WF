@@ -5,7 +5,7 @@ using AleksandrovMaths = AleksandrovRTm.Libs.Maths.Maths;
 
 namespace AleksandrovRTm.LibsTests.Maths.MethodFirstMoments
 {
-    internal class GFMethodFirstMomentsTest
+    internal class MethodFirstMomentsTests
     {
         [SetUp]
         public void Setup()

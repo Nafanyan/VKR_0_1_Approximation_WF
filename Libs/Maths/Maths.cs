@@ -126,12 +126,17 @@ namespace AleksandrovRTm.Libs.Maths
             return methodFirstMoments.Calculate( signal, startRange, endRange );
         }
 
+        /// <summary>
+        /// Оценивает центроиду пика с помощью метода пяти каналов
+        /// </summary>
+        /// <param name="signal"></param>
+        /// <param name="maxIndex"></param>
+        /// <returns></returns>
         public static double CalculateMethodFiveChannels( DigitalSignal signal, int maxIndex )
         {
             var methodFiveChannels = new MethodFiveChannels();
 
             return methodFiveChannels.Calculate( signal, maxIndex );
         }
-
     }
 }

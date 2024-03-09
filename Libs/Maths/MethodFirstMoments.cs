@@ -3,7 +3,7 @@ using Libs.Extensions;
 
 namespace Libs.Maths.MethodFirstMoments
 {
-    internal class GFMethodFirstMoments
+    internal class MethodFirstMoments
     {
         public double Calculate( DigitalSignal signal, int startRange, int endRange )
         {
