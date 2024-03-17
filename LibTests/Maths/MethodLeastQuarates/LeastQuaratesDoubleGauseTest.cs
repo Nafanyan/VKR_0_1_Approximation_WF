@@ -12,31 +12,57 @@ namespace AleksandrovRTm.LibsTests.Maths.MethodLeastQuarates
 
         }
 
-        [Test]
-        public void CalculateParameters_TheoreticalParamsGauseFunction_CorrectParams()
+        [TestCase( 0.1, 0.1, 0.1, 0.1, 0.1, 0.1 )]
+        [TestCase( 0.2, 0.2, 0.2, 0.2, 0.2, 0.2 )]
+        [TestCase( 0.3, 0.3, 0.3, 0.3, 0.3, 0.3 )]
+        [TestCase( 0.4, 0.4, 0.4, 0.4, 0.4, 0.4 )]
+        [TestCase( 0.5, 0.5, 0.5, 0.5, 0.5, 0.5 )]
+        [TestCase( 0.7, 0.7, 0.7, 0.7, 0.7, 0.7 )]
+        [TestCase( 0.8, 0.8, 0.8, 0.8, 0.8, 0.8 )]
+        [TestCase( 0.9, 0.9, 0.9, 0.9, 0.9, 0.9 )]
+
+        [TestCase( 1, 1, 1, 1, 1, 1 )]
+        [TestCase( -0.1, -0.1, -0.1, -0.1, -0.1, -0.1 )]
+        [TestCase( -0.1, -0.1, -0.1, -0.1, -0.1, -0.1 )]
+        [TestCase( -0.2, -0.2, -0.2, -0.2, -0.2, -0.2 )]
+        [TestCase( -0.3, -0.3, -0.3, -0.3, -0.3, -0.3 )]
+        [TestCase( -0.4, -0.4, -0.4, -0.4, -0.4, -0.4 )]
+        [TestCase( -0.5, -0.5, -0.5, -0.5, -0.5, -0.5 )]
+        [TestCase( -0.7, -0.7, -0.7, -0.7, -0.7, -0.7 )]
+        [TestCase( -0.8, -0.8, -0.8, -0.8, -0.8, -0.8 )]
+        [TestCase( -0.9, -0.9, -0.9, -0.9, -0.9, -0.9 )]
+        [TestCase( -1, -1, -1, -1, -1, -1 )]
+
+        public void CalculateParameters_TheoreticalParamsGauseFunction_CorrectParams(
+            double amplitudeOneErrorRate,
+            double amplitudeTwoErrorRate,
+            double peakCentreOneErrorRate,
+            double peakCentreTwoErrorRate,
+            double deviationTwoErrorRate,
+            double deviationOneErrorRate )
         {
             // Arrange
             // Ожидаемые значения, т.е. которые в действительности
             double sampleRate = 100;
 
-            double expectedAmplitudeOne = 1;
-            double expectedAmplitudeTwo = 4;
+            double expectedAmplitudeOne = 4;
+            double expectedAmplitudeTwo = 3;
 
-            double expectedPeakCentreOne = 5;
-            double expectedPeakCentreTwo = 15;
+            double expectedPeakCentreOne = 4;
+            double expectedPeakCentreTwo = 6;
 
             double expectedDeviationOne = 1;
             double expectedDeviationTwo = 2;
 
             // Реальные значения, т.е. которые в теории были рассчитаны
-            double realAmplitudeOne = 1.1;
-            double realAmplitudeTwo = 4.9;
+            double realAmplitudeOne = expectedAmplitudeOne + amplitudeOneErrorRate;
+            double realAmplitudeTwo = expectedAmplitudeTwo + amplitudeTwoErrorRate;
 
-            double realPeakCentreOne = 5.4;
-            double realPeakCentreTwo = 15;
+            double realPeakCentreOne = expectedPeakCentreOne + peakCentreOneErrorRate;
+            double realPeakCentreTwo = expectedPeakCentreTwo + peakCentreTwoErrorRate;
 
-            double realDeviationOne = 1.23;
-            double realDeviationTwo = 2.3;
+            double realDeviationOne = expectedDeviationOne + deviationOneErrorRate;
+            double realDeviationTwo = expectedDeviationTwo + deviationTwoErrorRate;
 
             // Act
             var gauseOne = new GauseFunction( expectedAmplitudeOne, expectedPeakCentreOne, expectedDeviationOne );
@@ -68,7 +94,7 @@ namespace AleksandrovRTm.LibsTests.Maths.MethodLeastQuarates
         }
 
         [Test]
-        public void CalculateParameters_CalculatedParamsGauseFunction_CorrectParams()
+        public void CalculateParameters_CombineCalculatedParamsGauseFunction_CorrectParams()
         {
             // Arrange
             double sampleRate = 10;

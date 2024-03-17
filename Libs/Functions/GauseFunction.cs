@@ -24,23 +24,23 @@ namespace AleksandrovRTm.Libs.Functions
         private double _peakCenter;
         private double _deviation;
 
-        public GauseFunction(double amplitude, double peakCenter, double deviation)
+        public GauseFunction( double amplitude, double peakCenter, double deviation )
         {
             _amplitude = amplitude;
             _peakCenter = peakCenter;
             _deviation = deviation;
         }
 
-        public override double GetValue(double x)
+        public override double GetValue( double x )
         {
-            double expFunc = Math.Exp(-1 * Math.Pow(x - _peakCenter, 2) / Math.Pow(_deviation, 2));
+            double expFunc = Math.Exp( -1 * Math.Pow( x - _peakCenter, 2 ) / Math.Pow( _deviation, 2 ) );
             return _amplitude * expFunc;
         }
 
-        public static double CalculateDeviation(double y, double x, double amplitude, double peakCenter)
+        public static double CalculateDeviation( double y, double x, double amplitude, double peakCenter )
         {
-            var deviation = Math.Sqrt(-1 * Math.Pow(x - peakCenter, 2) / Math.Log(y / amplitude));
-            return Math.Round(deviation, 3);
+            var deviation = Math.Sqrt( -1 * Math.Pow( x - peakCenter, 2 ) / Math.Log( y / amplitude ) );
+            return Math.Round( deviation, 3 );
         }
     }
 }

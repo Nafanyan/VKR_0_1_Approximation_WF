@@ -104,10 +104,22 @@ namespace AleksandrovRTm.Libs.Maths.MethodLeastQuarates
             var sig1 = new DigitalSignal( gauseOne.GetValues( 0, 30, 1 / Signal.SamplingRate ), Signal.SamplingRate ); ;
             var sig2 = new DigitalSignal( gauseTwo.GetValues( 0, 30, 1 / Signal.SamplingRate ), Signal.SamplingRate );
 
+            double y = 0;
+            double yFirstTheorSignal = 0;
+            double ySecondTheorSignal = 0;
+            double yTheorSignal = 0;
+
             for ( int x = 0; x < Signal.Values.Length; x++ )
             {
-                double y = Signal.Values[ x ];
-                sum += Math.Pow( y - ( sig1.Values[ x ] + sig2.Values[ x ] ), 2 );
+                y = Signal.Values[ x ];
+                yFirstTheorSignal = sig1.Values[ x ];
+                ySecondTheorSignal = sig2.Values[ x ];
+
+                yTheorSignal = yFirstTheorSignal > ySecondTheorSignal ?
+                    yFirstTheorSignal
+                    : ySecondTheorSignal;
+
+                sum += Math.Pow( y - ( yTheorSignal ), 2 );
             }
             return sum;
         }
