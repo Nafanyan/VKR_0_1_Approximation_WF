@@ -13,7 +13,7 @@ namespace AleksandrovRTm.Libs.Maths.MethodLeastQuarates
         public double MatExpectationSecond { get; private set; }
         public double DeviationSecond { get; private set; }
 
-        private double _h = 0.01;
+        private double _h = 0.1;
 
         public DoubleGFLeastQuarates(
             DigitalSignal signal,
@@ -56,7 +56,7 @@ namespace AleksandrovRTm.Libs.Maths.MethodLeastQuarates
                 }
 
                 var newMinValueParams = calculatedResult.LastOrDefault( r => r.Value == calculatedResult.Values.Min() );
-                if ( minValue == newMinValueParams.Value )
+                if ( Math.Round( minValue, 3 ) == Math.Round( newMinValueParams.Value, 3 ) )
                 {
                     _h /= 2;
                 }
@@ -112,6 +112,7 @@ namespace AleksandrovRTm.Libs.Maths.MethodLeastQuarates
             for ( int x = 0; x < Signal.Values.Length; x++ )
             {
                 y = Signal.Values[ x ];
+
                 yFirstTheorSignal = sig1.Values[ x ];
                 ySecondTheorSignal = sig2.Values[ x ];
 

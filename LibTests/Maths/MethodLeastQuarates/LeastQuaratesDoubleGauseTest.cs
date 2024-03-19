@@ -33,7 +33,7 @@ namespace AleksandrovRTm.LibsTests.Maths.MethodLeastQuarates
         [TestCase( -0.9, -0.9, -0.9, -0.9, -0.9, -0.9 )]
         [TestCase( -1, -1, -1, -1, -1, -1 )]
 
-        public void CalculateParameters_TheoreticalParamsGauseFunction_CorrectParams(
+        public void Calculate_parametes_signal_theor(
             double amplitudeOneErrorRate,
             double amplitudeTwoErrorRate,
             double peakCentreOneErrorRate,
@@ -43,16 +43,16 @@ namespace AleksandrovRTm.LibsTests.Maths.MethodLeastQuarates
         {
             // Arrange
             // Ожидаемые значения, т.е. которые в действительности
-            double sampleRate = 100;
+            double sampleRate = 10000;
 
-            double expectedAmplitudeOne = 4;
-            double expectedAmplitudeTwo = 3;
+            double expectedAmplitudeOne = 4.3;
+            double expectedAmplitudeTwo = 3.2;
 
-            double expectedPeakCentreOne = 4;
-            double expectedPeakCentreTwo = 6;
+            double expectedPeakCentreOne = 4.1;
+            double expectedPeakCentreTwo = 6.4;
 
-            double expectedDeviationOne = 1;
-            double expectedDeviationTwo = 2;
+            double expectedDeviationOne = 1.1;
+            double expectedDeviationTwo = 2.4;
 
             // Реальные значения, т.е. которые в теории были рассчитаны
             double realAmplitudeOne = expectedAmplitudeOne + amplitudeOneErrorRate;
@@ -94,19 +94,19 @@ namespace AleksandrovRTm.LibsTests.Maths.MethodLeastQuarates
         }
 
         [Test]
-        public void CalculateParameters_CombineCalculatedParamsGauseFunction_CorrectParams()
+        public void Calculate_parametes_signal_real()
         {
             // Arrange
-            double sampleRate = 10;
+            double sampleRate = 10000;
 
-            double amplitudeOne = 1;
-            double amplitudeTwo = 5;
+            double amplitudeOne = 4.3;
+            double amplitudeTwo = 3.2;
 
-            double peakCentreOne = 5;
-            double peakCentreTwo = 15;
+            double peakCentreOne = 4.1;
+            double peakCentreTwo = 6.4;
 
-            double deviationOne = 1;
-            double deviationTwo = 2;
+            double deviationOne = 1.1;
+            double deviationTwo = 2.4;
 
             // Act
             // Создаю две функции Гаусса и объеденяю их
@@ -117,6 +117,13 @@ namespace AleksandrovRTm.LibsTests.Maths.MethodLeastQuarates
             var signalTwo = new DigitalSignal( gauseTwo.GetValues( 0, 30, 1 / sampleRate ), sampleRate );
 
             DigitalSignal combineGause = DigitalSignal.CombineTwoSignals( signalOne, signalTwo );
+
+            var filter = AleksandrovMaths.GetDecimator();
+            int coefficientDecimation = ( int )( combineGause.Values.Count() / 100 );
+            
+            DigitalSignal combineFilteredSignal = new DigitalSignal(
+                filter.Decimation( combineGause.Values, coefficientDecimation ),
+                100 );
 
             // Нахожу экстремумы, а из них амплитуды и значения максимумов относительно x
             List<double> xExtremumsMax = AleksandrovMaths.ExtremumPointsMax( combineGause );
@@ -131,7 +138,7 @@ namespace AleksandrovRTm.LibsTests.Maths.MethodLeastQuarates
 
             // Создаю объект метода наименьших квадратов для двойной функции Гаусса
             var leastQuarates = AleksandrovMaths.GetLeastQuaratesDoubleGause(
-                combineGause,
+                combineFilteredSignal,
                 maxOneGause,
                 xExtremumsMax[ 0 ],
                 deviationFirstGause,

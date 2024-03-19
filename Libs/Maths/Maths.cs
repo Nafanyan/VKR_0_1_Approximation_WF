@@ -1,5 +1,7 @@
 ﻿using AleksandrovRTm.Core.Entities;
 using AleksandrovRTm.Libs.Maths.MethodLeastQuarates;
+using Libs.Maths;
+using Libs.Maths.Filters;
 
 namespace AleksandrovRTm.Libs.Maths
 {
@@ -106,5 +108,14 @@ namespace AleksandrovRTm.Libs.Maths
             return leastQuarates;
         }
 
+        public static Decimator GetDecimator()
+        {
+            return new Decimator();
+        }
+
+        public static MovingAverageFilter GetMovingAverageFilter()
+        {
+            return new MovingAverageFilter();
+        }
     }
 }
