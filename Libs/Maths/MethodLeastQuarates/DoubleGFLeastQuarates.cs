@@ -101,26 +101,17 @@ namespace AleksandrovRTm.Libs.Maths.MethodLeastQuarates
             double sum = 0;
             var gauseOne = new GauseFunction( amplitudeFirst, matExpectationFirst, deviationFirst );
             var gauseTwo = new GauseFunction( amplitudeSecond, matExpectationSecond, deviationSecond );
+
             var sig1 = new DigitalSignal( gauseOne.GetValues( 0, 30, 1 / Signal.SamplingRate ), Signal.SamplingRate ); ;
             var sig2 = new DigitalSignal( gauseTwo.GetValues( 0, 30, 1 / Signal.SamplingRate ), Signal.SamplingRate );
 
-            double y = 0;
-            double yFirstTheorSignal = 0;
-            double ySecondTheorSignal = 0;
-            double yTheorSignal = 0;
+            var theorSignal = DigitalSignal.CombineTwoSignals( sig1, sig2 );
 
-            for ( int x = 0; x < Signal.Values.Length; x++ )
+            int start = ( int )( matExpectationFirst - deviationFirst / 2 );
+
+            for ( int x = start; x < Signal.Values.Length; x++ )
             {
-                y = Signal.Values[ x ];
-
-                yFirstTheorSignal = sig1.Values[ x ];
-                ySecondTheorSignal = sig2.Values[ x ];
-
-                yTheorSignal = yFirstTheorSignal > ySecondTheorSignal ?
-                    yFirstTheorSignal
-                    : ySecondTheorSignal;
-
-                sum += Math.Pow( y - ( yTheorSignal ), 2 );
+                sum += Math.Pow( Signal.Values[ x ] - ( theorSignal.Values[ x ] ), 2 );
             }
             return sum;
         }

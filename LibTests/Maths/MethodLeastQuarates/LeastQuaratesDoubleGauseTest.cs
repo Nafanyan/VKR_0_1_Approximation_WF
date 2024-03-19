@@ -90,14 +90,98 @@ namespace AleksandrovRTm.LibsTests.Maths.MethodLeastQuarates
             Assert.AreEqual( expectedAmplitudeTwo, Math.Round( leastQuarates.AmplitudeSecond, 2 ) );
             Assert.AreEqual( expectedPeakCentreTwo, Math.Round( leastQuarates.MatExpectationSecond, 2 ) );
             Assert.AreEqual( expectedDeviationTwo, Math.Round( leastQuarates.DeviationSecond, 2 ) );
+        }
 
+        [TestCase( 0.1, 0.1, 0.1, 0.1, 0.1, 0.1 )]
+        [TestCase( 0.2, 0.2, 0.2, 0.2, 0.2, 0.2 )]
+        [TestCase( 0.3, 0.3, 0.3, 0.3, 0.3, 0.3 )]
+        [TestCase( 0.4, 0.4, 0.4, 0.4, 0.4, 0.4 )]
+        [TestCase( 0.5, 0.5, 0.5, 0.5, 0.5, 0.5 )]
+        [TestCase( 0.7, 0.7, 0.7, 0.7, 0.7, 0.7 )]
+        [TestCase( 0.8, 0.8, 0.8, 0.8, 0.8, 0.8 )]
+        [TestCase( 0.9, 0.9, 0.9, 0.9, 0.9, 0.9 )]
+
+        [TestCase( 1, 1, 1, 1, 1, 1 )]
+        [TestCase( -0.1, -0.1, -0.1, -0.1, -0.1, -0.1 )]
+        [TestCase( -0.1, -0.1, -0.1, -0.1, -0.1, -0.1 )]
+        [TestCase( -0.2, -0.2, -0.2, -0.2, -0.2, -0.2 )]
+        [TestCase( -0.3, -0.3, -0.3, -0.3, -0.3, -0.3 )]
+        [TestCase( -0.4, -0.4, -0.4, -0.4, -0.4, -0.4 )]
+        [TestCase( -0.5, -0.5, -0.5, -0.5, -0.5, -0.5 )]
+        [TestCase( -0.7, -0.7, -0.7, -0.7, -0.7, -0.7 )]
+        [TestCase( -0.8, -0.8, -0.8, -0.8, -0.8, -0.8 )]
+        [TestCase( -0.9, -0.9, -0.9, -0.9, -0.9, -0.9 )]
+        [TestCase( -1, -1, -1, -1, -1, -1 )]
+
+        public void Calculate_parametes_resize_signal_theor(
+            double amplitudeOneErrorRate,
+            double amplitudeTwoErrorRate,
+            double peakCentreOneErrorRate,
+            double peakCentreTwoErrorRate,
+            double deviationTwoErrorRate,
+            double deviationOneErrorRate )
+        {
+            // Arrange
+            // Ожидаемые значения, т.е. которые в действительности
+            double sampleRate = 1000000;
+
+            double expectedAmplitudeOne = 4.3;
+            double expectedAmplitudeTwo = 3.2;
+
+            double expectedPeakCentreOne = 4.1;
+            double expectedPeakCentreTwo = 6.4;
+
+            double expectedDeviationOne = 1.1;
+            double expectedDeviationTwo = 2.4;
+
+            // Реальные значения, т.е. которые в теории были рассчитаны
+            double realAmplitudeOne = expectedAmplitudeOne + amplitudeOneErrorRate;
+            double realAmplitudeTwo = expectedAmplitudeTwo + amplitudeTwoErrorRate;
+
+            double realPeakCentreOne = expectedPeakCentreOne + peakCentreOneErrorRate;
+            double realPeakCentreTwo = expectedPeakCentreTwo + peakCentreTwoErrorRate;
+
+            double realDeviationOne = expectedDeviationOne + deviationOneErrorRate;
+            double realDeviationTwo = expectedDeviationTwo + deviationTwoErrorRate;
+
+            // Act
+            var gauseOne = new GauseFunction( expectedAmplitudeOne, expectedPeakCentreOne, expectedDeviationOne );
+            var signalOne = new DigitalSignal( gauseOne.GetValues( 0, 30, 1 / sampleRate ), sampleRate );
+
+            var gauseTwo = new GauseFunction( expectedAmplitudeTwo, expectedPeakCentreTwo, expectedDeviationTwo );
+            var signalTwo = new DigitalSignal( gauseTwo.GetValues( 0, 30, 1 / sampleRate ), sampleRate );
+
+            DigitalSignal combineGause = DigitalSignal.CombineTwoSignals( signalOne, signalTwo );
+
+            var decimator = AleksandrovMaths.GetDecimator();
+            int coefficientDecimation = 10000;
+
+            var decimatedSignal = new DigitalSignal( decimator.Decimation( combineGause.Values, coefficientDecimation ), sampleRate / coefficientDecimation );
+
+            var leastQuarates = AleksandrovMaths.GetLeastQuaratesDoubleGause(
+                decimatedSignal,
+                realAmplitudeOne,
+                realPeakCentreOne,
+                realDeviationOne,
+                realAmplitudeTwo,
+                realPeakCentreTwo,
+                realDeviationTwo );
+
+            // Assert
+            Assert.AreEqual( expectedAmplitudeOne, Math.Round( leastQuarates.AmplitudeFirst, 2 ) );
+            Assert.AreEqual( expectedPeakCentreOne, Math.Round( leastQuarates.MatExpectationFirst, 2 ) );
+            Assert.AreEqual( expectedDeviationOne, Math.Round( leastQuarates.DeviationFirst, 2 ) );
+
+            Assert.AreEqual( expectedAmplitudeTwo, Math.Round( leastQuarates.AmplitudeSecond, 2 ) );
+            Assert.AreEqual( expectedPeakCentreTwo, Math.Round( leastQuarates.MatExpectationSecond, 2 ) );
+            Assert.AreEqual( expectedDeviationTwo, Math.Round( leastQuarates.DeviationSecond, 2 ) );
         }
 
         [Test]
         public void Calculate_parametes_signal_real()
         {
             // Arrange
-            double sampleRate = 10000;
+            double sampleRate = 100;
 
             double amplitudeOne = 4.3;
             double amplitudeTwo = 3.2;
@@ -120,7 +204,7 @@ namespace AleksandrovRTm.LibsTests.Maths.MethodLeastQuarates
 
             var filter = AleksandrovMaths.GetDecimator();
             int coefficientDecimation = ( int )( combineGause.Values.Count() / 100 );
-            
+
             DigitalSignal combineFilteredSignal = new DigitalSignal(
                 filter.Decimation( combineGause.Values, coefficientDecimation ),
                 100 );
